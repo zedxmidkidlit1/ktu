@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  --font-body: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  --surface: #000000;
+  --surface-soft: #121214;
+  --surface-strong: #1d1d1f;
+  --ink: #f5f5f7;
+  --muted: rgba(245, 245, 247, 0.72);
+  --brand: #0071e3;
+  --brand-deep: #0066cc;
+  --brand-hover: #2997ff;
+  --line: rgba(255, 255, 255, 0.18);
+  --panel-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+  letter-spacing: -0.015em;
+  line-height: 1.47;
+}
+
+a {
+  color: var(--brand-hover);
+}
+
+.site-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: var(--surface);
+}
+
+.site-main {
+  padding: 5.5rem 1rem 4.5rem;
+}
+
+.shell {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+}
+
+.glass-panel {
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  backdrop-filter: saturate(140%) blur(10px);
+  box-shadow: var(--panel-shadow);
+  border-radius: 12px;
+}
+
+.kicker {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+.section-title {
+  margin: 0.25rem 0 0.5rem;
+  font-family: var(--font-display);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.5rem);
+  font-weight: 600;
+}
+
+.section-subtitle {
+  margin: 0;
+  color: var(--muted);
+  max-width: 62ch;
+  font-size: 1.06rem;
+  letter-spacing: -0.02em;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-weight: 400;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-primary {
+  color: #fff;
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.btn-secondary {
+  color: var(--ink);
+  border: 1px solid var(--line);
+  background: transparent;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: var(--brand-hover);
+  border-color: var(--brand-hover);
+}
+
+.btn-secondary:hover {
+  border-color: var(--brand-hover);
+  color: var(--brand-hover);
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.stagger-rise {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fade-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 {
+  animation-delay: 0.06s;
+}
+
+.delay-2 {
+  animation-delay: 0.12s;
+}
+
+.delay-3 {
+  animation-delay: 0.18s;
+}
+
+@keyframes fade-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .site-main {
+    padding: 5rem 0.8rem 3.5rem;
+  }
+}

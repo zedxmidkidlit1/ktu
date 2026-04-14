@@ -1,0 +1,36 @@
+---
+export const prerender = true;
+
+import SectionHeading from "../../components/SectionHeading.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { listNews } from "../../lib/cms/content";
+import { formatDate } from "../../lib/format";
+
+const news = await listNews();
+---
+
+<SiteLayout title="News | Northfield Modern University" description="Official university announcements and updates.">
+  <div class="shell">
+    <section class="glass-panel p-6 md:p-8">
+      <SectionHeading
+        eyebrow="Newsroom"
+        title="Official updates from Northfield"
+        subtitle="Admissions, research, campus initiatives, and student achievements."
+      />
+      <div class="mt-6 space-y-3">
+        {
+          news.map((item) => (
+            <a href={`/news/${item.slug}`} class="block rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-5 hover:bg-[var(--surface-strong)]">
+              <p class="kicker">{item.category}</p>
+              <h2 class="mt-1 font-display text-3xl font-bold leading-tight">{item.title}</h2>
+              <p class="mt-2 text-[var(--muted)]">{item.summary}</p>
+              <p class="mt-2 text-sm font-semibold text-[var(--brand)]">
+                {formatDate(item.publishedAt)} · {item.author}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</SiteLayout>

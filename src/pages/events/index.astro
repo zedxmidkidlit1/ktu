@@ -1,0 +1,36 @@
+---
+export const prerender = true;
+
+import SectionHeading from "../../components/SectionHeading.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { listEvents } from "../../lib/cms/content";
+import { formatDateTime } from "../../lib/format";
+
+const events = await listEvents();
+---
+
+<SiteLayout title="Events | Northfield Modern University" description="Upcoming webinars, open days, and workshops.">
+  <div class="shell">
+    <section class="glass-panel p-6 md:p-8">
+      <SectionHeading
+        eyebrow="Events"
+        title="Upcoming sessions and campus visits"
+        subtitle="Join open days, student-facing webinars, and program workshops."
+      />
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        {
+          events.map((item) => (
+            <a href={`/events/${item.slug}`} class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-5 hover:bg-[var(--surface-strong)]">
+              <p class="kicker">{item.eventType}</p>
+              <h2 class="mt-1 font-display text-3xl font-bold leading-tight">{item.title}</h2>
+              <p class="mt-2 text-[var(--muted)]">{item.summary}</p>
+              <p class="mt-2 text-sm font-semibold text-[var(--brand)]">
+                {formatDateTime(item.startAt)} · {item.location}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</SiteLayout>

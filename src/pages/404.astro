@@ -1,0 +1,21 @@
+---
+export const prerender = true;
+
+import SiteLayout from "../layouts/SiteLayout.astro";
+---
+
+<SiteLayout title="Page Not Found | Northfield MU" description="The page you requested does not exist.">
+  <div class="shell">
+    <section class="glass-panel p-8 text-center">
+      <p class="kicker">404</p>
+      <h1 class="section-title">Page not found</h1>
+      <p class="section-subtitle mx-auto">
+        The URL may be outdated. Continue from the main sections below.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a href="/" class="btn-primary">Home</a>
+        <a href="/programs" class="btn-secondary">Programs</a>
+      </div>
+    </section>
+  </div>
+</SiteLayout>

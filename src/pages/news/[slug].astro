@@ -1,0 +1,39 @@
+---
+export const prerender = true;
+
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { listNews } from "../../lib/cms/content";
+import { formatDate } from "../../lib/format";
+import type { NewsItem } from "../../lib/cms/types";
+
+interface Props {
+  article: NewsItem;
+}
+
+export async function getStaticPaths() {
+  const news = await listNews();
+  return news.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+---
+
+<SiteLayout title={`${article.title} | Northfield News`} description={article.summary}>
+  <div class="shell">
+    <article class="glass-panel p-6 md:p-8">
+      <a href="/news" class="text-sm font-semibold text-[var(--brand)] hover:text-[var(--brand-deep)]">
+        ← Back to newsroom
+      </a>
+      <p class="kicker mt-4">{article.category}</p>
+      <h1 class="section-title mt-2">{article.title}</h1>
+      <p class="mt-1 text-sm font-semibold text-[var(--brand)]">
+        {formatDate(article.publishedAt)} · {article.author}
+      </p>
+      <p class="mt-5 text-lg text-[var(--muted)]">{article.summary}</p>
+      {article.content && <p class="mt-4 text-[var(--muted)]">{article.content}</p>}
+    </article>
+  </div>
+</SiteLayout>

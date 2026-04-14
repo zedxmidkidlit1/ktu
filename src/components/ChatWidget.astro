@@ -1,0 +1,153 @@
+<div data-chatbot-root data-endpoint="/api/chat">
+  <button
+    type="button"
+    data-chatbot-toggle
+    class="fixed bottom-5 right-4 z-40 rounded-full border border-[var(--line)] bg-black/85 px-4 py-2.5 text-sm font-normal text-white shadow-xl backdrop-blur-xl transition hover:border-[var(--brand-hover)] hover:text-[var(--brand-hover)] md:right-6"
+  >
+    Ask Northfield AI
+  </button>
+
+  <section
+    data-chatbot-panel
+    hidden
+    class="fixed bottom-20 right-4 z-40 w-[min(92vw,380px)] overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] shadow-2xl md:right-6"
+  >
+    <header class="flex items-center justify-between border-b border-[var(--line)] bg-black/60 px-4 py-3">
+      <div>
+        <p class="font-display text-lg font-semibold text-[var(--ink)]">Northfield Assistant</p>
+        <p class="text-xs text-[var(--muted)]">Admissions, programs, deadlines, campus info</p>
+      </div>
+      <button
+        type="button"
+        data-chatbot-close
+        class="rounded-md border border-transparent px-2 py-1 text-sm text-[var(--muted)] hover:border-[var(--line)] hover:text-white"
+      >
+        Close
+      </button>
+    </header>
+
+    <div data-chatbot-messages class="max-h-[52vh] space-y-3 overflow-y-auto px-4 py-3"></div>
+
+    <form data-chatbot-form class="border-t border-[var(--line)] bg-[var(--surface-soft)] p-3">
+      <label class="sr-only" for="chat-input">Message</label>
+      <textarea
+        id="chat-input"
+        name="message"
+        rows="2"
+        required
+        maxlength="800"
+        placeholder="Ask about tuition, scholarships, events..."
+        class="w-full rounded-xl border border-[var(--line)] bg-black/30 px-3 py-2 text-sm text-[var(--ink)] outline-none transition focus:border-[var(--brand)]"
+      ></textarea>
+      <div class="mt-2 flex items-center justify-between gap-2">
+        <p class="text-[11px] text-[var(--muted)]">Answers are generated from published university content.</p>
+        <button type="submit" class="btn-primary border-0 text-sm">
+          Send
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-chatbot-root]");
+    if (!root) return;
+
+    const panel = root.querySelector("[data-chatbot-panel]");
+    const toggleBtn = root.querySelector("[data-chatbot-toggle]");
+    const closeBtn = root.querySelector("[data-chatbot-close]");
+    const form = root.querySelector("[data-chatbot-form]");
+    const input = root.querySelector("#chat-input");
+    const messages = root.querySelector("[data-chatbot-messages]");
+    const endpoint = root.getAttribute("data-endpoint") || "/api/chat";
+    const history = [];
+
+    const addMessage = (role, text, citations) => {
+      const wrapper = document.createElement("article");
+      wrapper.className = role === "user" ? "ml-auto max-w-[88%] text-right" : "max-w-[92%]";
+
+      const bubble = document.createElement("div");
+      bubble.className =
+        role === "user"
+          ? "inline-block rounded-2xl bg-[var(--brand-deep)] px-3 py-2 text-sm text-white"
+          : "inline-block rounded-2xl bg-[var(--surface-strong)] px-3 py-2 text-sm text-[var(--ink)]";
+      bubble.textContent = text;
+      wrapper.appendChild(bubble);
+
+      if (role === "assistant" && Array.isArray(citations) && citations.length) {
+        const cite = document.createElement("p");
+        cite.className = "mt-1 text-[11px] text-[var(--muted)]";
+        cite.textContent = `Sources: ${citations.join(", ")}`;
+        wrapper.appendChild(cite);
+      }
+
+      messages.appendChild(wrapper);
+      messages.scrollTop = messages.scrollHeight;
+    };
+
+    const openPanel = () => {
+      panel.hidden = false;
+      toggleBtn.hidden = true;
+      if (messages.childElementCount === 0) {
+        addMessage(
+          "assistant",
+          "Hi! I can help with programs, admissions, scholarships, events, and deadlines."
+        );
+      }
+    };
+
+    const closePanel = () => {
+      panel.hidden = true;
+      toggleBtn.hidden = false;
+    };
+
+    toggleBtn.addEventListener("click", openPanel);
+    closeBtn.addEventListener("click", closePanel);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+
+      addMessage("user", message);
+      history.push({ role: "user", content: message });
+      input.value = "";
+      input.focus();
+
+      const pending = document.createElement("p");
+      pending.className = "text-xs text-[var(--muted)]";
+      pending.textContent = "Assistant is typing...";
+      messages.appendChild(pending);
+      messages.scrollTop = messages.scrollHeight;
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message,
+            history: history.slice(-8),
+          }),
+        });
+
+        const data = await response.json();
+        pending.remove();
+
+        if (!response.ok) {
+          const errorText = data?.error || "Unable to process your request right now.";
+          addMessage("assistant", errorText);
+          return;
+        }
+
+        const answer = data?.answer || "I could not generate an answer.";
+        const citations = Array.isArray(data?.citations) ? data.citations : [];
+        addMessage("assistant", answer, citations);
+        history.push({ role: "assistant", content: answer });
+      } catch {
+        pending.remove();
+        addMessage("assistant", "Network error. Please try again.");
+      }
+    });
+  })();
+</script>

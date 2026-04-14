@@ -1,0 +1,38 @@
+---
+export const prerender = true;
+
+import SiteLayout from "../layouts/SiteLayout.astro";
+---
+
+<SiteLayout title="About Northfield MU" description="Vision, mission, and academic model of Northfield Modern University.">
+  <div class="shell">
+    <section class="glass-panel p-6 md:p-8">
+      <p class="kicker">About Us</p>
+      <h1 class="section-title">A university designed for modern careers</h1>
+      <p class="section-subtitle">
+        Northfield Modern University integrates academic rigor, applied studio learning, and real-world partnerships.
+      </p>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <article class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+          <h2 class="font-display text-2xl font-bold">Mission</h2>
+          <p class="mt-2 text-[var(--muted)]">
+            Equip students with deep disciplinary knowledge and practical delivery skills.
+          </p>
+        </article>
+        <article class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+          <h2 class="font-display text-2xl font-bold">Approach</h2>
+          <p class="mt-2 text-[var(--muted)]">
+            Studio-driven curriculum, interdisciplinary capstones, and strong feedback loops from industry.
+          </p>
+        </article>
+        <article class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+          <h2 class="font-display text-2xl font-bold">Impact</h2>
+          <p class="mt-2 text-[var(--muted)]">
+            Graduates build meaningful careers in technology, business, design, and public innovation.
+          </p>
+        </article>
+      </div>
+    </section>
+  </div>
+</SiteLayout>

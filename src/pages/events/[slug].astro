@@ -1,0 +1,58 @@
+---
+export const prerender = true;
+
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { listEvents } from "../../lib/cms/content";
+import { formatDateTime } from "../../lib/format";
+import type { EventItem } from "../../lib/cms/types";
+
+interface Props {
+  event: EventItem;
+}
+
+export async function getStaticPaths() {
+  const events = await listEvents();
+  return events.map((event) => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+---
+
+<SiteLayout title={`${event.title} | Northfield Events`} description={event.summary}>
+  <div class="shell">
+    <article class="glass-panel p-6 md:p-8">
+      <a href="/events" class="text-sm font-semibold text-[var(--brand)] hover:text-[var(--brand-deep)]">
+        ← Back to events
+      </a>
+      <p class="kicker mt-4">{event.eventType}</p>
+      <h1 class="section-title mt-2">{event.title}</h1>
+      <p class="section-subtitle">{event.summary}</p>
+
+      <div class="mt-6 grid gap-3 md:grid-cols-3">
+        <div class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+          <p class="text-xs text-[var(--muted)]">Starts</p>
+          <p class="font-semibold">{formatDateTime(event.startAt)}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+          <p class="text-xs text-[var(--muted)]">Ends</p>
+          <p class="font-semibold">{event.endAt ? formatDateTime(event.endAt) : "TBA"}</p>
+        </div>
+        <div class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
+          <p class="text-xs text-[var(--muted)]">Location</p>
+          <p class="font-semibold">{event.location}</p>
+        </div>
+      </div>
+
+      {event.content && <p class="mt-5 text-[var(--muted)]">{event.content}</p>}
+
+      {event.registrationUrl && (
+        <a href={event.registrationUrl} class="btn-primary mt-5" target="_blank" rel="noreferrer">
+          Register Now
+        </a>
+      )}
+    </article>
+  </div>
+</SiteLayout>

@@ -1,0 +1,70 @@
+---
+const path = Astro.url.pathname;
+
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/programs", label: "Programs" },
+  { href: "/news", label: "News" },
+  { href: "/events", label: "Events" },
+  { href: "/admissions", label: "Admissions" },
+  { href: "/about", label: "About" },
+];
+
+const isActive = (href: string) => {
+  if (href === "/") {
+    return path === "/";
+  }
+
+  return path === href || path.startsWith(`${href}/`);
+};
+---
+
+<header class="shell">
+  <div
+    class="fixed left-1/2 top-3 z-30 flex w-[min(1040px,calc(100%-1.2rem))] -translate-x-1/2 items-center justify-between rounded-full border border-[var(--line)] bg-black/80 px-4 py-2 backdrop-blur-xl md:px-5"
+  >
+    <a href="/" class="min-w-max font-display text-lg font-semibold tracking-[-0.02em] text-[var(--ink)]">
+      northfield<span class="text-[var(--brand-hover)]">.edu</span>
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              "rounded-full px-3 py-1.5 text-[13px] font-normal tracking-[-0.01em] transition-colors",
+              isActive(item.href)
+                ? "bg-[var(--surface-strong)] text-white"
+                : "text-[rgba(255,255,255,0.82)] hover:text-white",
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a href="/contact" class="rounded-full border border-[var(--line)] px-3 py-1.5 text-[13px] text-white hover:border-[var(--brand-hover)] hover:text-[var(--brand-hover)]">
+      Contact →
+    </a>
+  </div>
+
+  <nav class="mt-16 flex gap-2 overflow-x-auto pb-1 md:hidden">
+    {
+      navItems.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            "min-w-max rounded-full border px-3 py-1.5 text-xs font-normal tracking-[-0.01em] transition-colors",
+            isActive(item.href)
+              ? "border-[var(--brand)] bg-[var(--brand)] text-white"
+              : "border-[var(--line)] bg-transparent text-[var(--muted)]",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
