@@ -5,9 +5,9 @@ export async function GET(context: { site: URL | undefined }) {
   const news = await listNews();
 
   return rss({
-    title: "Northfield Modern University News",
-    description: "Official announcements and updates from Northfield Modern University",
-    site: context.site ?? "https://university.example.edu",
+    title: "Kyaukse Technological University News",
+    description: "Official announcements and updates from Kyaukse Technological University",
+    site: context.site ?? "https://official-ktu.vercel.app",
     items: news.map((item) => ({
       title: item.title,
       pubDate: new Date(item.publishedAt),

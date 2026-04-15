@@ -59,7 +59,7 @@ export async function fetchSanityPrograms(): Promise<ProgramItem[]> {
       .filter((row) => Boolean(row.slug && row.title))
       .map((row) => ({
         ...row,
-        applicationDeadline: new Date(row.applicationDeadline).toISOString(),
+        applicationDeadline: row.applicationDeadline ? new Date(row.applicationDeadline).toISOString() : undefined,
         tags: row.tags ?? [],
         featured: Boolean(row.featured),
         sortOrder: row.sortOrder ?? 99,
@@ -124,7 +124,7 @@ export async function fetchSanityEvents(): Promise<EventItem[]> {
       .filter((row) => Boolean(row.slug && row.title))
       .map((row) => ({
         ...row,
-        startAt: new Date(row.startAt).toISOString(),
+        startAt: row.startAt ? new Date(row.startAt).toISOString() : undefined,
         endAt: row.endAt ? new Date(row.endAt).toISOString() : undefined,
         content: row.content ?? "",
       }));

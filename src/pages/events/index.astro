@@ -9,13 +9,13 @@ import { formatDateTime } from "../../lib/format";
 const events = await listEvents();
 ---
 
-<SiteLayout title="Events | Northfield Modern University" description="Upcoming webinars, open days, and workshops.">
+<SiteLayout title="Events | Kyaukse Technological University" description="Upcoming KTU events and ceremonies.">
   <div class="shell">
     <section class="glass-panel p-6 md:p-8">
       <SectionHeading
         eyebrow="Events"
-        title="Upcoming sessions and campus visits"
-        subtitle="Join open days, student-facing webinars, and program workshops."
+        title="Academic and campus events"
+        subtitle="Convocations, exhibitions, and official university activities."
       />
       <div class="mt-6 grid gap-4 md:grid-cols-2">
         {
@@ -25,7 +25,7 @@ const events = await listEvents();
               <h2 class="mt-1 font-display text-3xl font-bold leading-tight">{item.title}</h2>
               <p class="mt-2 text-[var(--muted)]">{item.summary}</p>
               <p class="mt-2 text-sm font-semibold text-[var(--brand)]">
-                {formatDateTime(item.startAt)} · {item.location}
+                {item.startAt ? formatDateTime(item.startAt) : "Date to be announced"} · {item.location}
               </p>
             </a>
           ))

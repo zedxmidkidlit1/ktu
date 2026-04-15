@@ -7,8 +7,8 @@ export interface ProgramItem {
   degree: string;
   duration: string;
   campus: string;
-  applicationDeadline: string;
-  tuitionPerYearUSD: number;
+  applicationDeadline?: string;
+  tuitionPerYearUSD?: number;
   tags: string[];
   featured: boolean;
   sortOrder: number;
@@ -32,7 +32,7 @@ export interface EventItem {
   summary: string;
   location: string;
   eventType: string;
-  startAt: string;
+  startAt?: string;
   endAt?: string;
   registrationUrl?: string;
   content: string;

@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 const { event } = Astro.props;
 ---
 
-<SiteLayout title={`${event.title} | Northfield Events`} description={event.summary}>
+<SiteLayout title={`${event.title} | KTU Events`} description={event.summary}>
   <div class="shell">
     <article class="glass-panel p-6 md:p-8">
       <a href="/events" class="text-sm font-semibold text-[var(--brand)] hover:text-[var(--brand-deep)]">
@@ -34,7 +34,7 @@ const { event } = Astro.props;
       <div class="mt-6 grid gap-3 md:grid-cols-3">
         <div class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
           <p class="text-xs text-[var(--muted)]">Starts</p>
-          <p class="font-semibold">{formatDateTime(event.startAt)}</p>
+          <p class="font-semibold">{event.startAt ? formatDateTime(event.startAt) : "To be announced"}</p>
         </div>
         <div class="rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
           <p class="text-xs text-[var(--muted)]">Ends</p>

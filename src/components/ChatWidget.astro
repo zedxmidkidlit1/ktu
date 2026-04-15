@@ -4,7 +4,7 @@
     data-chatbot-toggle
     class="fixed bottom-5 right-4 z-40 rounded-full border border-[var(--line)] bg-black/85 px-4 py-2.5 text-sm font-normal text-white shadow-xl backdrop-blur-xl transition hover:border-[var(--brand-hover)] hover:text-[var(--brand-hover)] md:right-6"
   >
-    Ask Northfield AI
+    Ask KTU AI
   </button>
 
   <section
@@ -14,8 +14,8 @@
   >
     <header class="flex items-center justify-between border-b border-[var(--line)] bg-black/60 px-4 py-3">
       <div>
-        <p class="font-display text-lg font-semibold text-[var(--ink)]">Northfield Assistant</p>
-        <p class="text-xs text-[var(--muted)]">Admissions, programs, deadlines, campus info</p>
+        <p class="font-display text-lg font-semibold text-[var(--ink)]">KTU Assistant</p>
+        <p class="text-xs text-[var(--muted)]">Admissions, departments, events, and contact info</p>
       </div>
       <button
         type="button"
@@ -36,11 +36,11 @@
         rows="2"
         required
         maxlength="800"
-        placeholder="Ask about tuition, scholarships, events..."
+        placeholder="Ask about admissions, departments, events..."
         class="w-full rounded-xl border border-[var(--line)] bg-black/30 px-3 py-2 text-sm text-[var(--ink)] outline-none transition focus:border-[var(--brand)]"
       ></textarea>
       <div class="mt-2 flex items-center justify-between gap-2">
-        <p class="text-[11px] text-[var(--muted)]">Answers are generated from published university content.</p>
+        <p class="text-[11px] text-[var(--muted)]">Answers are generated from published KTU content.</p>
         <button type="submit" class="btn-primary border-0 text-sm">
           Send
         </button>
@@ -92,7 +92,7 @@
       if (messages.childElementCount === 0) {
         addMessage(
           "assistant",
-          "Hi! I can help with programs, admissions, scholarships, events, and deadlines."
+          "Hi! I can help with KTU admissions, departments, events, and contact details."
         );
       }
     };

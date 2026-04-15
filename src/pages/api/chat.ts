@@ -59,16 +59,19 @@ function buildKnowledgeLines(
 ): { programs: string; news: string; events: string } {
   const programLines = programs
     .slice(0, 8)
-    .map(
-      (item) =>
-        `${item.title} (${item.degree}, ${item.duration}) | Dept: ${item.department} | Deadline: ${formatDate(item.applicationDeadline)}`
-    );
+    .map((item) => {
+      const deadline = item.applicationDeadline ? formatDate(item.applicationDeadline) : "Admissions period announced on official channels";
+      return `${item.title} (${item.degree}, ${item.duration}) | Dept: ${item.department} | Deadline: ${deadline}`;
+    });
   const newsLines = news
     .slice(0, 8)
     .map((item) => `${item.title} | ${item.category} | Published: ${formatDate(item.publishedAt)}`);
   const eventLines = events
     .slice(0, 8)
-    .map((item) => `${item.title} | ${item.eventType} | ${formatDateTime(item.startAt)} | ${item.location}`);
+    .map((item) => {
+      const start = item.startAt ? formatDateTime(item.startAt) : "Date to be announced";
+      return `${item.title} | ${item.eventType} | ${start} | ${item.location}`;
+    });
 
   return {
     programs: programLines.join("\n"),

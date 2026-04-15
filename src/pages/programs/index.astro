@@ -5,21 +5,21 @@ import InfoCard from "../../components/InfoCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { listPrograms } from "../../lib/cms/content";
-import { formatDate, formatUSD } from "../../lib/format";
+import { formatDate } from "../../lib/format";
 
 const programs = await listPrograms();
 ---
 
 <SiteLayout
-  title="Programs | Northfield Modern University"
-  description="Degree programs with tuition, deadlines, and department details."
+  title="Departments | Kyaukse Technological University"
+  description="Engineering and science departments at KTU."
 >
   <div class="shell">
     <section class="glass-panel p-6 md:p-8">
       <SectionHeading
-        eyebrow="Academic Programs"
-        title="Career-ready degree tracks"
-        subtitle="Compare program focus, admissions deadlines, and yearly tuition in one place."
+        eyebrow="Academic Departments"
+        title="Departments at Technological University Kyaukse"
+        subtitle="Explore engineering and science-focused departments and admissions status."
       />
       <div class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {
@@ -28,7 +28,9 @@ const programs = await listPrograms();
               title={program.title}
               summary={program.summary}
               badge={program.department}
-              meta={`${formatDate(program.applicationDeadline)} deadline · ${formatUSD(program.tuitionPerYearUSD)}/year`}
+              meta={program.applicationDeadline
+                ? `Application window · ${formatDate(program.applicationDeadline)}`
+                : "Admissions open for 2025-2026 academic year"}
               href={`/programs/${program.slug}`}
             />
           ))

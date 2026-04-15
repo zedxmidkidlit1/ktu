@@ -17,7 +17,11 @@ function sortNews(items: NewsItem[]): NewsItem[] {
 }
 
 function sortEvents(items: EventItem[]): EventItem[] {
-  return [...items].sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
+  return [...items].sort((a, b) => {
+    const aTime = a.startAt ? new Date(a.startAt).getTime() : Number.POSITIVE_INFINITY;
+    const bTime = b.startAt ? new Date(b.startAt).getTime() : Number.POSITIVE_INFINITY;
+    return aTime - bTime;
+  });
 }
 
 export async function listPrograms(): Promise<ProgramItem[]> {
@@ -38,7 +42,7 @@ export async function listPrograms(): Promise<ProgramItem[]> {
     degree: entry.data.degree,
     duration: entry.data.duration,
     campus: entry.data.campus,
-    applicationDeadline: entry.data.applicationDeadline.toISOString(),
+    applicationDeadline: entry.data.applicationDeadline?.toISOString(),
     tuitionPerYearUSD: entry.data.tuitionPerYearUSD,
     tags: entry.data.tags,
     featured: entry.data.featured,
@@ -87,7 +91,7 @@ export async function listEvents(): Promise<EventItem[]> {
     summary: entry.data.summary,
     location: entry.data.location,
     eventType: entry.data.eventType,
-    startAt: entry.data.startAt.toISOString(),
+    startAt: entry.data.startAt?.toISOString(),
     endAt: entry.data.endAt?.toISOString(),
     registrationUrl: entry.data.registrationUrl,
     content: entry.body ?? "",
