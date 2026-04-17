@@ -20,51 +20,142 @@ const isActive = (href: string) => {
 ---
 
 <header class="shell">
-  <div
-    class="fixed left-1/2 top-3 z-30 flex w-[min(1040px,calc(100%-1.2rem))] -translate-x-1/2 items-center justify-between rounded-full border border-[var(--line)] bg-black/80 px-4 py-2 backdrop-blur-xl md:px-5"
-  >
-    <a href="/" class="min-w-max font-display text-lg font-semibold tracking-[-0.02em] text-[var(--ink)]">
-      kyauksetu<span class="text-[var(--brand-hover)]">.edu.mm</span>
-    </a>
-
-    <nav class="hidden items-center gap-1 md:flex">
-      {
-        navItems.map((item) => (
-          <a
-            href={item.href}
-            class:list={[
-              "rounded-full px-3 py-1.5 text-[13px] font-normal tracking-[-0.01em] transition-colors",
-              isActive(item.href)
-                ? "bg-[var(--surface-strong)] text-white"
-                : "text-[rgba(255,255,255,0.82)] hover:text-white",
-            ]}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
-
-    <a href="/contact" class="rounded-full border border-[var(--line)] px-3 py-1.5 text-[13px] text-white hover:border-[var(--brand-hover)] hover:text-[var(--brand-hover)]">
-      Contact →
-    </a>
-  </div>
-
-  <nav class="mt-16 flex gap-2 overflow-x-auto pb-1 md:hidden">
-    {
-      navItems.map((item) => (
-        <a
-          href={item.href}
-          class:list={[
-            "min-w-max rounded-full border px-3 py-1.5 text-xs font-normal tracking-[-0.01em] transition-colors",
-            isActive(item.href)
-              ? "border-[var(--brand)] bg-[var(--brand)] text-white"
-              : "border-[var(--line)] bg-transparent text-[var(--muted)]",
-          ]}
-        >
-          {item.label}
+  <div class="fixed left-1/2 top-3 z-40 w-[min(1120px,calc(100%-1rem))] -translate-x-1/2">
+    <div class="rounded-2xl border border-[var(--line)] bg-[color-mix(in_srgb,var(--surface-soft)_88%,transparent)] px-3 py-2 shadow-[var(--panel-shadow)] backdrop-blur-xl md:px-4 md:py-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <a href="/" class="min-w-max font-display text-[0.95rem] font-bold tracking-[-0.03em] text-[var(--ink)] md:text-lg">
+          kyauksetu<span class="text-[var(--brand)]">.edu.mm</span>
         </a>
-      ))
-    }
-  </nav>
+
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="Main Navigation">
+          {
+            navItems.map((item) => (
+              <a
+                href={item.href}
+                class:list={[
+                  "rounded-full px-3 py-1.5 text-[13px] font-semibold tracking-[-0.01em] no-underline transition-colors",
+                  isActive(item.href)
+                    ? "bg-[var(--surface-strong)] text-[var(--surface-contrast)]"
+                    : "text-[var(--muted)] hover:text-[var(--ink)]",
+                ]}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <div class="flex items-center gap-1.5 md:gap-2">
+          <button
+            type="button"
+            data-theme-toggle
+            class="inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--line)] px-3 text-xs font-semibold text-[var(--ink)] transition-colors hover:border-[var(--brand)] hover:text-[var(--brand)]"
+            aria-label="Toggle color theme"
+          >
+            <span data-theme-icon aria-hidden="true">◐</span>
+            <span class="hidden md:inline" data-theme-label>Theme</span>
+          </button>
+
+          <a
+            href="/contact"
+            class="hidden rounded-full border border-[var(--line)] px-3 py-2 text-xs font-semibold text-[var(--ink)] no-underline transition-colors hover:border-[var(--brand)] hover:text-[var(--brand)] lg:inline-flex"
+          >
+            Contact
+          </a>
+
+          <button
+            type="button"
+            data-mobile-nav-toggle
+            class="inline-flex h-9 items-center rounded-full border border-[var(--line)] px-3 text-xs font-semibold text-[var(--ink)] lg:hidden"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            Menu
+          </button>
+        </div>
+      </div>
+
+      <nav
+        id="mobile-nav"
+        data-mobile-nav
+        hidden
+        class="mt-2 border-t border-[var(--line)] pt-2 lg:hidden"
+        aria-label="Mobile Navigation"
+      >
+        <div class="grid grid-cols-2 gap-2">
+          {
+            navItems.map((item) => (
+              <a
+                href={item.href}
+                class:list={[
+                  "rounded-xl border px-3 py-2 text-center text-sm font-semibold no-underline transition-colors",
+                  isActive(item.href)
+                    ? "border-[var(--brand)] bg-[var(--brand)] text-white"
+                    : "border-[var(--line)] bg-[var(--surface-soft)] text-[var(--ink)]",
+                ]}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+        <a
+          href="/contact"
+          class="mt-2 inline-flex w-full items-center justify-center rounded-xl border border-[var(--line)] px-3 py-2 text-sm font-semibold text-[var(--ink)] no-underline"
+        >
+          Contact Admissions Office
+        </a>
+      </nav>
+    </div>
+  </div>
 </header>
+
+<script is:inline>
+  (() => {
+    const doc = document.documentElement;
+    const navButton = document.querySelector("[data-mobile-nav-toggle]");
+    const nav = document.querySelector("[data-mobile-nav]");
+    const themeButtons = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+
+    const getTheme = () => doc.dataset.theme || "light";
+
+    const paintThemeLabel = (theme) => {
+      const next = theme === "dark" ? "Light" : "Dark";
+      themeButtons.forEach((btn) => {
+        const label = btn.querySelector("[data-theme-label]");
+        const icon = btn.querySelector("[data-theme-icon]");
+        if (label) label.textContent = `${next} Mode`;
+        if (icon) icon.textContent = theme === "dark" ? "☾" : "☀";
+      });
+    };
+
+    const setTheme = (theme) => {
+      doc.dataset.theme = theme;
+      localStorage.setItem("ktu-theme", theme);
+      paintThemeLabel(theme);
+    };
+
+    paintThemeLabel(getTheme());
+
+    themeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const active = getTheme();
+        setTheme(active === "dark" ? "light" : "dark");
+      });
+    });
+
+    if (navButton && nav) {
+      navButton.addEventListener("click", () => {
+        const isOpen = !nav.hasAttribute("hidden");
+        if (isOpen) {
+          nav.setAttribute("hidden", "");
+          navButton.setAttribute("aria-expanded", "false");
+          return;
+        }
+
+        nav.removeAttribute("hidden");
+        navButton.setAttribute("aria-expanded", "true");
+      });
+    }
+  })();
+</script>
